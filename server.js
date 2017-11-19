@@ -4,6 +4,8 @@
 // A simple chat server using Socket.IO, Express, and Async.
 //
 var express = require('express');
+var mysql = require('mysql');
+var path = require('path');
 
 //
 // ## SimpleServer `SimpleServer(obj)`
@@ -13,13 +15,16 @@ var express = require('express');
 //
 var app = express();
 
-app.use(express.static(__dirname, 'client'));
+app.use(express.static('client'));
 
-app.get('/', function(req, res){
-  res.send("hello");
+app.post('/', function(req, res){
+    res.writeHead(302, {
+        'Location': '/'
+    });
+    res.end();
 });
 
-app.listen(8080, function(){
+app.listen(process.env.PORT, function(){
   console.log("Listening on port 8080!");
 });
 
