@@ -5,7 +5,21 @@
 //
 var express = require('express');
 var mysql = require('mysql');
-var path = require('path');
+var app = express();
+var bodyParser = require('body-parser');
+var session = require('express-session');
+
+var con = mysql.createConnection({
+  host: process.env.IP,
+  user: "caiozed",
+  password: "",
+  database: "c9"
+});
+
+con.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+});
 
 //
 // ## SimpleServer `SimpleServer(obj)`
@@ -13,15 +27,31 @@ var path = require('path');
 // Creates a new instance of SimpleServer with the following options:
 //  * `port` - The HTTP port to listen on. If `process.env.PORT` is set, _it overrides this value_.
 //
-var app = express();
+
 
 app.use(express.static('client'));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(session({
+    secret: "shhh", 
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true}
+}));
 
-app.post('/', function(req, res){
-    res.writeHead(302, {
-        'Location': '/'
+app.use(bodyParser.json());
+
+var sess;
+app.post('/signup', function(req, res){
+    var query = "INSERT INTO users(username, password) VALUES (?, ?)";
+    var username = req.body.username;
+    var password = req.body.password;
+    con.query(query,[username, password], function(err, results, fields){
+        if(err){
+            res.send("<div class='alert alert-danger'>User already exists</div>"); 
+        }else{
+            res.send("<div class='alert alert-success'>User created</div>");  
+        }
     });
-    res.end();
 });
 
 app.listen(process.env.PORT, function(){

@@ -7,7 +7,9 @@
   "author": "Caio Neves <caio.nevesleite@gmail.com>",
   "dependencies": {
     "async": "~0.2.8",
+    "body-parser": "^1.18.2",
     "express": "^4.16.2",
+    "express-session": "^1.15.6",
     "grunt": "~1.0.1"
   },
   "devDependencies": {

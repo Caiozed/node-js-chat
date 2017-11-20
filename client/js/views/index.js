@@ -5,7 +5,7 @@ define([
     "text!js/templates/index.html"
 ],function($, Backbone, underscore, indexTemplate){
     var indexView = Backbone.View.extend({
-       el: $(".container"), 
+       el: $("#content"), 
        
        initialize: function(){
            this.render();
