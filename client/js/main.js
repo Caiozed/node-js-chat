@@ -10,7 +10,7 @@ require.config({
         jquery: {
             exports: '$'  
         },
-        
+
         underscore: {
             exports: '_'   
         },
@@ -23,8 +23,15 @@ require.config({
 });
 
 require(["js/router", "jquery"], function(router, $){
+    window.App = {
+        redirect_to: function(url){
+            window.location = url;
+        }
+    }
+    
     $(document).ready(function(){
-        router.initialize();    
+        router.initialize(); 
     });
 });
+
 

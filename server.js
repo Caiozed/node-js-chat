@@ -48,14 +48,25 @@ app.post('/signup', function(req, res){
     con.query(query,[username, password], function(err, results, fields){
         if(err){
             res.send("<div class='alert alert-danger'>User already exists</div>"); 
+        }
+    });
+});
+
+app.post('/login', function(req, res){
+    var query = "SELECT * FROM users WHERE username = ? AND password = ?";
+    var username = req.body.username;
+    var password = req.body.password;
+    con.query(query, [username,password], function(err, results, fields){
+        if(err){
+            res.send("<div class='alert alert-danger'>Something is wrong</div>"); 
         }else{
-            res.send("<div class='alert alert-success'>User created</div>");  
+            res.send(JSON.stringify({results: results, redirect: "#"}));
         }
     });
 });
 
 app.listen(process.env.PORT, function(){
-  console.log("Listening on port 8080!");
+    console.log("Listening on port 8080!");
 });
 
 

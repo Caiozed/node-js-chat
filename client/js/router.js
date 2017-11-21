@@ -4,11 +4,13 @@ define([
     "underscore",
     "js/views/index.js",
     "js/views/signup.js",
-], function($, Backbone, _, indexView, signupView){
+    "js/views/login.js"
+], function($, Backbone, _, indexView, signupView, loginView){
     var Router = Backbone.Router.extend({
        routes:{
            "": "index",
-           "signup": "signup"
+           "signup": "signup",
+           "login": "login"
        },
        
        index: function(){
@@ -17,6 +19,10 @@ define([
        
        signup: function(){
            signupView.initialize();
+       },
+       
+       login: function(){
+           loginView.initialize();
        }
     });
     

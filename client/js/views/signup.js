@@ -8,7 +8,7 @@ define([
        el: $("#content"), 
        
        events: {
-            "submit .form": "createUser"           
+            "submit #signup-form": "createUser"           
        },
        
        initialize: function(){
@@ -28,7 +28,7 @@ define([
                method: "POST",
                data: {username: username, password: password},
                success: function(response){
-                    $("#error-handling").html(response);
+                    App.redirect_to("#login");
                },
                
                error: function(response){

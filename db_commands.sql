@@ -6,5 +6,5 @@
 -- );
 
 -- DROP TABLE users; 
- delete from users where id > 0;
- select * from users;
+-- delete from users where id > 0;
+-- select * from users;
