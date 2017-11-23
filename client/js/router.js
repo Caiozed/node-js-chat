@@ -4,25 +4,51 @@ define([
     "underscore",
     "js/views/index.js",
     "js/views/signup.js",
-    "js/views/login.js"
-], function($, Backbone, _, indexView, signupView, loginView){
+    "js/views/login.js",
+    "js/views/chat.js",
+    "js/views/chat-list.js"
+], function($, Backbone, _, indexView, signupView, loginView, chatView, chatListView){
     var Router = Backbone.Router.extend({
        routes:{
            "": "index",
            "signup": "signup",
-           "login": "login"
+           "login": "login",
+           "chats": "chat_list",
+           "chat/:id": "chat"
        },
        
        index: function(){
-            indexView.initialize();  
+            if(!App.is_logged_in()){
+                indexView.initialize();
+            }
        },
        
        signup: function(){
-           signupView.initialize();
+            if(!App.is_logged_in()){
+                signupView.initialize();
+            }
        },
        
        login: function(){
-           loginView.initialize();
+            if(!App.is_logged_in()){
+                loginView.initialize();
+            }
+       },
+       
+       chat_list: function(){
+           if(App.is_logged_in()){
+                chatListView.initialize();
+            }else{
+                App.redirect_to("#login");
+            }
+       },
+       
+       chat: function(chat_id){
+           if(App.is_logged_in()){
+                chatView.initialize(chat_id);
+            }else{
+                App.redirect_to("#login");
+            }
        }
     });
     

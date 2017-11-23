@@ -24,7 +24,7 @@ define([
            var username = $("#username").val().trim();
            var password = $("#password").val().trim();
            $.ajax({
-               url: "/login",
+               url: "/new/login",
                method: "POST",
                dataType: "json",
                data: {username: username, password: password},
@@ -33,6 +33,9 @@ define([
                     if(response.results.length == 0){
                       $("#error-handling").html("<div class='alert alert-danger'>Wrong name or password!</div>");
                     }else{
+                        var result = response.results[[0]];
+                        sessionStorage.user_id = result.id;
+                        sessionStorage.username = result.username;
                         App.redirect_to(response.redirect);
                     }
                },

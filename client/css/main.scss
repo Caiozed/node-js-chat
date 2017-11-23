@@ -1,3 +1,7 @@
+html,body{
+    height: 100%;
+}
+
 .form{
     width: 200px;
     margin: 10px auto;
@@ -8,4 +12,21 @@
     input{
         margin: 5px auto;
     }
+}
+
+.navbar-inverse{
+    a{
+        margin: 2px 10px;
+        color: white;
+    }
+    background: #000000;   
+}
+
+.chat{
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, .5);
+    transition: all .5s;
+}
+
+.already-member{
+    background: red;
 }

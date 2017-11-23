@@ -41,18 +41,18 @@ app.use(session({
 app.use(bodyParser.json());
 
 var sess;
-app.post('/signup', function(req, res){
+app.post('/new/user', function(req, res){
     var query = "INSERT INTO users(username, password) VALUES (?, ?)";
     var username = req.body.username;
     var password = req.body.password;
     con.query(query,[username, password], function(err, results, fields){
         if(err){
-            res.send("<div class='alert alert-danger'>User already exists</div>"); 
+            res.json({status:400, msg:"<div class='alert alert-danger'>User already exists</div>"}); 
         }
     });
 });
 
-app.post('/login', function(req, res){
+app.post('/new/login', function(req, res){
     var query = "SELECT * FROM users WHERE username = ? AND password = ?";
     var username = req.body.username;
     var password = req.body.password;
@@ -60,7 +60,68 @@ app.post('/login', function(req, res){
         if(err){
             res.send("<div class='alert alert-danger'>Something is wrong</div>"); 
         }else{
-            res.send(JSON.stringify({results: results, redirect: "#"}));
+            res.send(JSON.stringify({results: results, redirect: "#chats"}));
+        }
+    });
+});
+
+app.post('/new/chat', function(req, res){
+    var query = "INSERT INTO chats (user_id, name, description) VALUES (?, ?, ?)";
+    var user_id = req.body.user_id;
+    var name = req.body.name;
+    var desc = req.body.description;
+    con.query(query, [user_id, name, desc], function(err, results, fields){
+        if(err){
+            res.json({status: 400, msg: "<div class='alert alert-danger'>Chat already exists!</div>"});
+        }else{
+            res.json({status: 200, msg: "<div class='alert alert-success'>Chat created!</div>"});
+        }
+    });
+});
+
+app.post('/chats', function(req, res){
+    var query = "SELECT * FROM chats";
+    con.query(query, function(err, results, fields){
+        if(err){
+            res.send("<div class='alert alert-danger'>Something is wrong</div>"); 
+        }else{
+            res.send(JSON.stringify(results));
+        }
+    });
+});
+
+app.post('/chat/:id', function(req, res){
+    var id = req.params.id;
+    var query = "SELECT * FROM messages WHERE chat_id = ?";
+    var query2 = "SELECT * FROM members WHERE chat_id = ?";
+    con.query(query, [id], function(err, results, fields){
+        if(err){
+            res.send("<div class='alert alert-danger'>Something is wrong</div>"); 
+        }else{
+            res.send(JSON.stringify(results));
+        }
+    });
+});
+
+app.post('/new/member', function(req, res){
+    var query = "INSERT INTO members (user_id, chat_id) VALUES (?, ?)";
+    var user_id = req.body.user_id;
+    var chat_id = req.body.chat_id;
+    con.query(query, [user_id, chat_id], function(err, results, fields){
+        if(err){
+            res.json({status: 400, msg: "<div class='alert alert-danger'>You'r Already a member!</div>"});
+        }
+    });
+});
+
+app.post('/new/message', function(req, res){
+    var query = "INSERT INTO messages (user_id, chat_id, content) VALUES (?, ?, ?)";
+    var user_id = req.body.user_id;
+    var chat_id = req.body.chat_id;
+    var content = req.body.content;
+    con.query(query, [user_id, chat_id, content], function(err, results, fields){
+        if(err){
+            res.send("<div class='alert alert-danger'>Something is wrong</div>"); 
         }
     });
 });

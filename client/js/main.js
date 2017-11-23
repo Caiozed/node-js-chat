@@ -26,9 +26,17 @@ require(["js/router", "jquery"], function(router, $){
     window.App = {
         redirect_to: function(url){
             window.location = url;
+        },
+        
+        is_logged_in: function(){
+            if(sessionStorage.user_id){
+                return true;
+            }else{
+                return false;
+            }
         }
-    }
-    
+    };
+
     $(document).ready(function(){
         router.initialize(); 
     });

@@ -2,7 +2,7 @@ define([
     "jquery",
     "backbone",
     "underscore",
-    "text!js/templates/signup.html"
+    "text!js/templates/user/signup.html"
 ],function($, Backbone, underscore, signupTemplate){
     var signupView = Backbone.View.extend({
        el: $("#content"), 
@@ -24,11 +24,17 @@ define([
            var username = $("#username").val().trim();
            var password = $("#password").val().trim();
            $.ajax({
-               url: "/signup",
+               url: "/new/user",
                method: "POST",
+               dataType: "json",
                data: {username: username, password: password},
                success: function(response){
-                    App.redirect_to("#login");
+                   if(response.status == 400){
+                        $("#error-handling").html(response.msg);
+                   }else{
+                        App.redirect_to("#login");   
+                   }
+                    
                },
                
                error: function(response){
