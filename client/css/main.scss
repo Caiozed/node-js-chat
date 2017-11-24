@@ -15,6 +15,7 @@ html,body{
 }
 
 .navbar-inverse{
+    width: 101.34%;
     a{
         margin: 2px 10px;
         color: white;
@@ -29,4 +30,45 @@ html,body{
 
 .already-member{
     background: red;
+}
+
+.online-users{
+    overflow-y: scroll;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, .3);
+}
+
+.message-block{
+    position: relative; 
+    border: 1px solid black;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, .2);
+}
+
+.message-list{
+    overflow-y: scroll;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, .2);
+    border-radius: 5px;
+    margin: 10px auto auto auto;
+    width: 90%;
+    height: 500px;
+}
+
+.send-message{
+    margin: 10px auto;
+    width: 90%;
+    input{
+        width: 90%;
+        border-radius: 10px;
+        font-size: 40px;
+    }
+    
+    .send-btn{
+        font-size: 50px;
+        &:hover{
+            color: cyan;
+            cursor: pointer;
+        }
+        &:active{
+            color: green;  
+        }
+    }
 }

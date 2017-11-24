@@ -114,6 +114,18 @@ app.post('/new/member', function(req, res){
     });
 });
 
+app.post('/members', function(req, res){
+    var query = "SELECT * FROM users INNER JOIN members ON members.user_id = users.id WHERE members.chat_id = ?";
+    var chat_id = req.body.chat_id;
+    con.query(query, [chat_id], function(err, results, fields){
+        if(err){
+            res.json({status: 400, msg: "<div class='alert alert-danger'>You'r Already a member!</div>"});
+        }else{
+            res.json(results);
+        }
+    });
+});
+
 app.post('/new/message', function(req, res){
     var query = "INSERT INTO messages (user_id, chat_id, content) VALUES (?, ?, ?)";
     var user_id = req.body.user_id;

@@ -1,13 +1,12 @@
-<section class="online-users">
-    <% if(users){%>
-        <% _.each(users, function(user){ %>
-            <h1><%= user.name %></h1>
-        <% }); %>
-    <% }; %>
-</section>
-<section class="message-list">
-    <article>
-        <input type="text" name="message">
-        <span class="btn btn-info">Send</span>
-    </article>
-</section>
+<div class="row">
+    <section class="online-users col-4"></section>
+    <section class="message-block col">
+        <article class="message-list">
+            
+        </article>
+        <article class="send-message">
+            <input type="text" name="message">
+            <i class="send-btn fa fa-share-square" aria-hidden="true"></i>
+        </article>
+    </section>
+</div>
