@@ -23,6 +23,7 @@
 -- CREATE TABLE messages(
 --                 id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 --                 content VARCHAR(500) NOT NULL,
+--                 sent_date DATETIME NOT NULL,
 --                 user_id INT NOT NULL,
 --                 chat_id INT NOT NULL
 -- );
@@ -36,3 +37,5 @@
 -- select * from users;
 -- select * from chats;
 -- select * from members;
+-- select * from messages;
+-- SELECT * FROM users INNER JOIN messages ON messages.user_id = users.id WHERE messages.chat_id = 2;

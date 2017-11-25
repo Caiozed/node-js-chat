@@ -127,16 +127,30 @@ app.post('/members', function(req, res){
 });
 
 app.post('/new/message', function(req, res){
-    var query = "INSERT INTO messages (user_id, chat_id, content) VALUES (?, ?, ?)";
+    var query = "INSERT INTO messages (user_id, chat_id, content, sent_date) VALUES (?, ?, ?, ?)";
     var user_id = req.body.user_id;
     var chat_id = req.body.chat_id;
-    var content = req.body.content;
-    con.query(query, [user_id, chat_id, content], function(err, results, fields){
+    var content = req.body.msg;
+    var sent_date = req.body.date;
+    con.query(query, [user_id, chat_id, content, sent_date], function(err, results, fields){
         if(err){
             res.send("<div class='alert alert-danger'>Something is wrong</div>"); 
         }
     });
 });
+
+app.post('/messages', function(req, res){
+    var query = "SELECT * FROM messages INNER JOIN users ON messages.user_id = users.id WHERE messages.chat_id = ? GROUP BY sent_date ASC";
+    var chat_id = req.body.chat_id;
+    con.query(query, [chat_id], function(err, results, fields){
+        if(err){
+            res.json({status: 400, msg: "<div class='alert alert-danger'>You'r Already a member!</div>"});
+        }else{
+            res.json(results);
+        }
+    });
+});
+
 
 app.listen(process.env.PORT, function(){
     console.log("Listening on port 8080!");
