@@ -9,47 +9,63 @@ define([
     "js/views/chat-list.js"
 ], function($, Backbone, _, indexView, signupView, loginView, chatView, chatListView){
     var Router = Backbone.Router.extend({
-       routes:{
+        routes:{
            "": "index",
            "signup": "signup",
            "login": "login",
+           "logout": "logout",
            "chats": "chat_list",
            "chat/:id": "chat"
-       },
-       
-       index: function(){
+        },
+        
+        index: function(){
+            App.update_status();
             if(!App.is_logged_in()){
                 indexView.initialize();
+            }else{
+                App.redirect_to("#chats");
             }
-       },
-       
-       signup: function(){
+        },
+        
+        signup: function(){
+            App.update_status();
             if(!App.is_logged_in()){
                 signupView.initialize();
+            }else{
+                App.redirect_to("#chats");
             }
-       },
-       
-       login: function(){
+        },
+        
+        login: function(){
+            App.update_status();
             if(!App.is_logged_in()){
                 loginView.initialize();
             }
-       },
-       
-       chat_list: function(){
+        },
+        
+        logout: function(){
+            App.update_status();
+            sessionStorage.clear();
+            App.redirect_to("#");
+        },
+        
+        chat_list: function(){
+            App.update_status();
            if(App.is_logged_in()){
                 chatListView.initialize();
             }else{
                 App.redirect_to("#login");
             }
-       },
-       
-       chat: function(chat_id){
+        },
+        
+        chat: function(chat_id){
+            App.update_status();
            if(App.is_logged_in()){
                 chatView.initialize(chat_id);
             }else{
                 App.redirect_to("#login");
             }
-       }
+        }
     });
     
     return {

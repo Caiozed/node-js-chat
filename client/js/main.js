@@ -34,6 +34,14 @@ require(["js/router", "jquery"], function(router, $){
             }else{
                 return false;
             }
+        },
+        
+        update_status: function(){
+            if(this.is_logged_in()){
+                $("#status").html("<a href='#logout'>Log out</a>");
+            }else{
+                $("#status").html("<a href='#login'>Log in</a>");
+            }
         }
     };
 

@@ -9,6 +9,8 @@ define([
     var chatView = Backbone.View.extend({
         el: $("#content"),
        
+        is_member: 0,
+        
         events: {
             "click #send": "sendMessage",
             "keypress #message": "checkInput"
@@ -21,9 +23,9 @@ define([
        },
        
        render: function(){
-           this.$el.html(this.template);
-           this.getMembers();
-           this.getMessages();
+            this.$el.html(this.template);
+            this.getMembers();
+            this.getMessages();
        },
        
        sendMessage: function(e){
@@ -31,20 +33,24 @@ define([
             var that = this;
             var date = new Date().toISOString().slice(0, 19).replace('T', ' ');
             var msg = $("#message").text().trim();
-            $.ajax({
-                url: "/new/message",
-                method: "POST",
-                dataType: "json",
-                data: {msg: msg, user_id: sessionStorage.user_id, chat_id: this.id, date: date},
-                success: function(){
-                    $("#message").text('');
-                },
-               
-               error: function(response){
-                   $("#error-handling").html(response);
-               }
-           });
-           that.getMessages();
+            if(this.is_member == 0){
+                $(".online-users").append('<p class="alert alert-danger">You need to be a member before being able to send messages</p>');
+            }else{
+                 $.ajax({
+                    url: "/new/message",
+                    method: "POST",
+                    dataType: "json",
+                    data: {msg: msg, user_id: sessionStorage.user_id, chat_id: this.id, date: date},
+                    success: function(){
+                        $("#message").text('');
+                    },
+                   
+                    error: function(response){
+                       $("#error-handling").html(response);
+                    }
+                });
+            that.getMessages();
+            }
        },
        
        getMessages: function(){
@@ -54,7 +60,6 @@ define([
                 dataType: "json",
                 data: {chat_id: this.id},
                 success: function(response){
-                    console.log(response);
                     var temp = _.template(messagesPartialTemplate);
                     $(".message-list").html(temp({messages: response, _: _})); 
                 },
@@ -66,12 +71,14 @@ define([
        },
        
        getMembers: function(){
+           var that = this;
            $.ajax({
                 url: "/members",
                 method: "POST",
                 dataType: "json",
                 data: {chat_id: this.id},
                 success: function(response){
+                    that.is_member = response.filter(function(member){return member["id"]==sessionStorage.user_id}).length;
                     var temp = _.template(membersPartialTemplate);
                     $(".online-users").append(temp({members: response, _: _}));  
                 },
