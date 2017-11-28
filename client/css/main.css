@@ -30,6 +30,7 @@ html, body {
 }
 
 .chat {
+  margin: 10px 0;
   padding: 15px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   transition: all .5s;

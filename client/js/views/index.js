@@ -14,7 +14,7 @@ define([
        },
        
        render: function(){
-           this.$el.html(this.template({user_id: sessionStorage.user_id}));
+           this.$el.html(this.template);
        }
     });
     

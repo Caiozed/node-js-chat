@@ -99,6 +99,8 @@ define([
     
     return {
             initialize: function(id){
+                $("#content").undelegate("#send", "click");
+                $("#content").undelegate("#message", "keypress");
                 new chatView({id: id});
             }
         };

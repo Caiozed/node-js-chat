@@ -36,7 +36,7 @@ define([
                         var result = response.results[[0]];
                         sessionStorage.user_id = result.id;
                         sessionStorage.username = result.username;
-                        App.redirect_to(response.redirect);
+                        App.redirect_to("#chats");
                     }
                },
                
@@ -49,6 +49,7 @@ define([
     
     return {
             initialize: function(){
+                $("#content").undelegate("#login-form", "submit");
                 new loginView();
             }
         };

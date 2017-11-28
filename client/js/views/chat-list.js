@@ -61,6 +61,8 @@ define([
                     if(response.status==400){
                         $("#error-handling").html(response.msg);
                     }else{
+                        $("#name").val("");
+                        $("#description").val("");
                         that.getChats();
                         $("#error-handling").html(response.msg);  
                     }
@@ -104,6 +106,8 @@ define([
     
     return {
             initialize: function(){
+                $("#content").undelegate("#become_member", "click");
+                $("#content").undelegate("#chat-form", "submit");
                 new chatListView();
             }
         };

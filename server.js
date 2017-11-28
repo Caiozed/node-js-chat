@@ -47,7 +47,9 @@ app.post('/new/user', function(req, res){
     var password = req.body.password;
     con.query(query,[username, password], function(err, results, fields){
         if(err){
-            res.json({status:400, msg:"<div class='alert alert-danger'>User already exists</div>"}); 
+            res.send(JSON.stringify({status:400, msg:"<div class='alert alert-danger'>User already exists</div>"})); 
+        }else{
+            res.send(JSON.stringify({status:200}));
         }
     });
 });
@@ -60,7 +62,7 @@ app.post('/new/login', function(req, res){
         if(err){
             res.send("<div class='alert alert-danger'>Something is wrong</div>"); 
         }else{
-            res.send(JSON.stringify({results: results, redirect: "#chats"}));
+            res.send(JSON.stringify({results: results}));
         }
     });
 });
@@ -73,8 +75,9 @@ app.post('/new/chat', function(req, res){
     con.query(query, [user_id, name, desc], function(err, results, fields){
         if(err){
             res.json({status: 400, msg: "<div class='alert alert-danger'>Chat already exists!</div>"});
+            res.end();
         }else{
-            res.json({status: 200, msg: "<div class='alert alert-success'>Chat created!</div>"});
+           res.send(JSON.stringify({status: 200}));
         }
     });
 });
@@ -90,15 +93,30 @@ app.post('/chats', function(req, res){
     });
 });
 
-app.post('/chat/:id', function(req, res){
+app.get('/chat/:id', function(req, res){
     var id = req.params.id;
-    var query = "SELECT * FROM messages WHERE chat_id = ?";
-    var query2 = "SELECT * FROM members WHERE chat_id = ?";
+    var query = "SELECT * FROM chats WHERE id = ?";
     con.query(query, [id], function(err, results, fields){
         if(err){
-            res.send("<div class='alert alert-danger'>Something is wrong</div>"); 
+            res.json(JSON.stringify({status: 400, msg: "<div class='alert alert-danger'>Something is wrong</div>"})); 
+            res.end();
         }else{
             res.send(JSON.stringify(results));
+        }
+    });
+});
+
+app.post('/edit/chat/:id', function(req, res){
+    var id = req.params.id;
+    var name = req.body.name;
+    var description = req.body.description;
+    var query = "UPDATE chats SET name = ?, description = ? WHERE id = ?";
+    con.query(query, [name, description, id], function(err, results, fields){
+        if(err){
+            res.json(JSON.stringify({status: 400, msg: "<div class='alert alert-danger'>Something is wrong</div>"})); 
+            res.end();
+        }else{
+            res.send(JSON.stringify({status: 200})); 
         }
     });
 });
@@ -110,6 +128,9 @@ app.post('/new/member', function(req, res){
     con.query(query, [user_id, chat_id], function(err, results, fields){
         if(err){
             res.json({status: 400, msg: "<div class='alert alert-danger'>You'r Already a member!</div>"});
+            res.end();
+        }else{
+            res.send(JSON.stringify({status: 200})); 
         }
     });
 });
@@ -120,8 +141,9 @@ app.post('/members', function(req, res){
     con.query(query, [chat_id], function(err, results, fields){
         if(err){
             res.json({status: 400, msg: "<div class='alert alert-danger'>You'r Already a member!</div>"});
+            res.end();
         }else{
-            res.json(results);
+            res.send(JSON.stringify(results));
         }
     });
 });
@@ -145,8 +167,9 @@ app.post('/messages', function(req, res){
     con.query(query, [chat_id], function(err, results, fields){
         if(err){
             res.json({status: 400, msg: "<div class='alert alert-danger'>You'r Already a member!</div>"});
+            res.end();
         }else{
-            res.json(results);
+            res.send(JSON.stringify(results));
         }
     });
 });

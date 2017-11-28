@@ -44,5 +44,10 @@ define([
        }
     });
     
-    return {initialize: function(){ new signupView()}};
+    return {
+        initialize: function(){ 
+            $("#content").undelegate("#signup-form", "submit");
+            new signupView();
+        }
+    };
 });

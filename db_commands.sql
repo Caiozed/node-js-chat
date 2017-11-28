@@ -1,3 +1,8 @@
+-- DROP TABLE users; 
+-- DROP TABLE chats;
+-- DROP TABLE members;
+-- DROP TABLE messages;
+
 -- CREATE TABLE users(
 --                 id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 --                 username VARCHAR(50) NOT NULL,
@@ -29,13 +34,11 @@
 -- );
 
 -- INSERT INTO chats(name, description) VALUES ("Teste", "Just a test");
--- DROP TABLE users; 
--- DROP TABLE chats;
--- DROP TABLE members;
--- DROP TABLE messages;
+
 -- delete from users where id > 0;
 -- select * from users;
 -- select * from chats;
 -- select * from members;
 -- select * from messages;
--- SELECT * FROM users INNER JOIN messages ON messages.user_id = users.id WHERE messages.chat_id = 2;
+-- SELECT * FROM users INNER JOIN messages ON messages.user_id = users.id WHERE messages.chat_id = 1;
+-- UPDATE chats SET name = "teste5", description = "normal description" WHERE id = "3";
