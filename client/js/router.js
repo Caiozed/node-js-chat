@@ -17,7 +17,8 @@ define([
            "logout": "logout",
            "chats": "chat_list",
            "chat/:id": "chat",
-           "edit/chat/:id": "edit_chat"
+           "edit/chat/:id": "edit_chat",
+           "delete/chat/:id": "delete_chat"
         },
         
         index: function(){
@@ -70,6 +71,15 @@ define([
         },
         
         edit_chat: function(chat_id){
+            App.update_status();
+            if(App.is_logged_in()){
+                editChatView.initialize(chat_id);
+            }else{
+                App.redirect_to("#login");
+            }
+        },
+        
+        delete_chat: function(chat_id){
             App.update_status();
             if(App.is_logged_in()){
                 editChatView.initialize(chat_id);

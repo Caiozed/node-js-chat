@@ -42,3 +42,5 @@
 -- select * from messages;
 -- SELECT * FROM users INNER JOIN messages ON messages.user_id = users.id WHERE messages.chat_id = 1;
 -- UPDATE chats SET name = "teste5", description = "normal description" WHERE id = "3";
+-- SELECT * FROM users INNER JOIN members ON members.user_id = users.id WHERE members.chat_id = 1;
+-- DELETE FROM members WHERE chat_id = 1 AND user_id = 1

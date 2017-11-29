@@ -42,6 +42,41 @@ require(["js/router", "jquery"], function(router, $){
             }else{
                 $("#status").html("<a href='#login'>Log in</a>");
             }
+        },
+        
+        make_ajax_request: function(url, method, dataType, data, successCallback, errorCallback){
+            $.ajax({
+                url: url,
+                method: method,
+                dataType: dataType,
+                data: data,
+                success: function(response){
+                    successCallback(response);
+                },
+                
+                error: function(response){
+                    errorCallback(response);
+                }
+                
+            });
+        },
+        
+        is_member: function(chat_id, callback){
+             this.make_ajax_request(
+                 "/members", 
+                 "POST", 
+                 "json", 
+                 {chat_id: chat_id}, 
+                 function(response){
+                    var result = response.filter(function(member){return member["id"]==sessionStorage.user_id}).length;
+                                                console.log(result);
+                    callback(result);
+                },
+                
+                function(response){
+                    console.log(response);
+                }
+            );
         }
     };
 

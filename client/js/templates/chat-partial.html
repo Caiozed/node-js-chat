@@ -1,9 +1,15 @@
 <div class="chat">
-    <h1><%= name %></h1>
-    <p><%= description %></p>
-    <a class="text-center btn btn-primary" href="#chat/<%= id %>">Enter</a>
-    <a class="text-center btn btn-primary" id="become_member" data-chat_id="<%= id %>" href="_blank">Become a Member</a>
-    <% if(user_id == sessionStorage.user_id){ %>
-        <a class="text-center btn btn-warning" href="#edit/chat/<%= id %>">Edit</a>
+    <h1><%= chat.name %></h1>
+    <p><%= chat.description %></p>
+    <a class="text-center btn btn-primary" href="#chat/<%= chat.id %>">Enter</a>
+    <% console.log(is_member)%>
+    <% if(is_member == 0){ %>
+        <a class="text-center btn btn-primary" id="become_member" data-chat_id="<%= chat.id %>" href="_blank">Become a Member</a>
+    <% }else{%>
+        <a class="text-center btn btn-warning" id="cancel_membership" data-chat_id="<%= chat.id %>" href="_blank">Cancel Membership</a>
     <% } %>
+    <% if(chat.user_id == sessionStorage.user_id){ %>
+        <a class="text-center btn btn-warning" href="#edit/chat/<%= chat.id %>">Edit</a>
+    <% } %>
+    <a class="text-center btn btn-danger" id="delete_chat" data-chat_id="<%= chat.id %>" href="_blank">Delete</a>
 </div>

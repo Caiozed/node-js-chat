@@ -13,7 +13,8 @@ var con = mysql.createConnection({
   host: process.env.IP,
   user: "caiozed",
   password: "",
-  database: "c9"
+  database: "c9",
+  multipleStatements: true
 });
 
 con.connect(function(err) {
@@ -121,6 +122,35 @@ app.post('/edit/chat/:id', function(req, res){
     });
 });
 
+app.post('/delete/chat/:id', function(req, res){
+    var id = req.params.id;
+    var query = "DELETE messages FROM messages WHERE chat_id = ?";
+    var query2 = "DELETE members FROM members WHERE chat_id = ?";
+    var query3 = "DELETE chats FROM chats WHERE id = ?";
+    con.query(query, [id], function(err, results, fields){
+        if(err){
+            res.json(JSON.stringify({status: 400, msg: "<div class='alert alert-danger'>Something is wrong</div>"})); 
+            res.end();
+        }
+    });
+    
+    con.query(query2, [id], function(err, results, fields){
+        if(err){
+            res.json(JSON.stringify({status: 400, msg: "<div class='alert alert-danger'>Something is wrong</div>"})); 
+            res.end();
+        }
+    });
+    
+    con.query(query3, [id], function(err, results, fields){
+        if(err){
+            res.json(JSON.stringify({status: 400, msg: "<div class='alert alert-danger'>Something is wrong</div>"})); 
+            res.end();
+        }else{
+            res.send(JSON.stringify({status: 200})); 
+        }
+    });
+});
+
 app.post('/new/member', function(req, res){
     var query = "INSERT INTO members (user_id, chat_id) VALUES (?, ?)";
     var user_id = req.body.user_id;
@@ -147,6 +177,21 @@ app.post('/members', function(req, res){
         }
     });
 });
+
+app.post('/delete/member', function(req, res){
+    var query = "DELETE FROM members WHERE chat_id = ? AND user_id = ?";
+    var user_id = req.body.user_id;
+    var chat_id = req.body.chat_id;
+    con.query(query, [chat_id, user_id], function(err, results, fields){
+        if(err){
+            res.json({status: 400, msg: "<div class='alert alert-danger'>You'r Already a member!</div>"});
+            res.end();
+        }else{
+            res.send({status: 200});
+        }
+    });
+});
+
 
 app.post('/new/message', function(req, res){
     var query = "INSERT INTO messages (user_id, chat_id, content, sent_date) VALUES (?, ?, ?, ?)";

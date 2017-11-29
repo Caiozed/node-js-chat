@@ -8,8 +8,6 @@ define([
 ], function($, Backbone, _, chatTemplate, membersPartialTemplate, messagesPartialTemplate){
     var chatView = Backbone.View.extend({
         el: $("#content"),
-       
-        is_member: 0,
         
         events: {
             "click #send": "sendMessage",
@@ -33,59 +31,47 @@ define([
             var that = this;
             var date = new Date().toISOString().slice(0, 19).replace('T', ' ');
             var msg = $("#message").text().trim();
-            if(this.is_member == 0){
+            if(App.is_member(this.id) == 0){
                 $(".online-users").append('<p class="alert alert-danger">You need to be a member before being able to send messages</p>');
             }else{
-                 $.ajax({
-                    url: "/new/message",
-                    method: "POST",
-                    dataType: "json",
-                    data: {msg: msg, user_id: sessionStorage.user_id, chat_id: this.id, date: date},
-                    success: function(){
+                App.make_ajax_request(
+                    "/new/message", 
+                    "POST", 
+                    "json", 
+                    {msg: msg, user_id: sessionStorage.user_id, chat_id: this.id, date: date},
+                    function(){
                         $("#message").text('');
                     },
-                   
-                    error: function(response){
+                    
+                    function(response){
                        $("#error-handling").html(response);
                     }
-                });
-            that.getMessages();
+                );
+                that.getMessages();
             }
        },
        
        getMessages: function(){
-            $.ajax({
-                url: "/messages",
-                method: "POST",
-                dataType: "json",
-                data: {chat_id: this.id},
-                success: function(response){
+           App.make_ajax_request(
+                "/messages", 
+                "POST", 
+                "json", 
+                {chat_id: this.id}, 
+                function(response){
                     var temp = _.template(messagesPartialTemplate);
                     $(".message-list").html(temp({messages: response, _: _})); 
                 },
-               
-               error: function(response){
+                
+                function(response){
                    $("#error-handling").html(response);
-               }
-           });
+                }
+            );
        },
        
        getMembers: function(){
-           var that = this;
-           $.ajax({
-                url: "/members",
-                method: "POST",
-                dataType: "json",
-                data: {chat_id: this.id},
-                success: function(response){
-                    that.is_member = response.filter(function(member){return member["id"]==sessionStorage.user_id}).length;
-                    var temp = _.template(membersPartialTemplate);
-                    $(".online-users").append(temp({members: response, _: _}));  
-                },
-               
-               error: function(response){
-                   $("#error-handling").html(response);
-               }
+           App.is_member(this.id, function(response){
+                var temp = _.template(membersPartialTemplate);
+                $(".online-users").append(temp({members: response, _: _}));  
            });
        },
        
