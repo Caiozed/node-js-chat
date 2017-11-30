@@ -68,9 +68,24 @@ require(["js/router", "jquery"], function(router, $){
                  "json", 
                  {chat_id: chat_id}, 
                  function(response){
-                    var result = response.filter(function(member){return member["id"]==sessionStorage.user_id}).length;
-                                                console.log(result);
+                    var result = response.filter(function(member){return member["user_id"]==sessionStorage.user_id}).length;
                     callback(result);
+                },
+                
+                function(response){
+                    console.log(response);
+                }
+            );
+        },
+        
+        get_chat: function(chat_id, callback){
+             this.make_ajax_request(
+                 "/chat/"+chat_id, 
+                 "GET", 
+                 "json", 
+                 {},
+                 function(response){
+                    callback(response);
                 },
                 
                 function(response){

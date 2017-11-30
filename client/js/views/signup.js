@@ -5,43 +5,43 @@ define([
     "text!js/templates/user/signup.html"
 ],function($, Backbone, underscore, signupTemplate){
     var signupView = Backbone.View.extend({
-       el: $("#content"), 
+        el: $("#content"), 
        
-       events: {
+        events: {
             "submit #signup-form": "createUser"           
-       },
+        },
        
-       initialize: function(){
+        initialize: function(){
            this.render();
-       },
+        },
        
-       render: function(){
+        render: function(){
            this.$el.html(signupTemplate);
-       }, 
+        }, 
        
-       createUser: function(e){
+        createUser: function(e){
            e.preventDefault();
            var username = $("#username").val().trim();
            var password = $("#password").val().trim();
-           $.ajax({
-               url: "/new/user",
-               method: "POST",
-               dataType: "json",
-               data: {username: username, password: password},
-               success: function(response){
+            App.make_ajax_request(
+                "/new/user", 
+                "POST", 
+                "json", 
+                {username: username, password: password}, 
+                function(response){
                    if(response.status == 400){
                         $("#error-handling").html(response.msg);
                    }else{
                         App.redirect_to("#login");   
                    }
                     
-               },
-               
-               error: function(response){
+                },
+                
+                function(response){
                    $("#error-handling").html(response);
-               }
-           });
-       }
+                }
+            );
+        }
     });
     
     return {

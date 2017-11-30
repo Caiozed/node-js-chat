@@ -83,7 +83,7 @@ app.post('/new/chat', function(req, res){
     });
 });
 
-app.post('/chats', function(req, res){
+app.get('/chats', function(req, res){
     var query = "SELECT * FROM chats";
     con.query(query, function(err, results, fields){
         if(err){
@@ -207,7 +207,7 @@ app.post('/new/message', function(req, res){
 });
 
 app.post('/messages', function(req, res){
-    var query = "SELECT * FROM messages INNER JOIN users ON messages.user_id = users.id WHERE messages.chat_id = ? GROUP BY sent_date ASC";
+    var query = "SELECT * FROM messages INNER JOIN users ON messages.user_id = users.id WHERE messages.chat_id = ? ORDER BY sent_date ASC";
     var chat_id = req.body.chat_id;
     con.query(query, [chat_id], function(err, results, fields){
         if(err){

@@ -1,4 +1,8 @@
 <% _.each(members, function(member){ %>
-    <h1><%= member.username %></h1>
+    <% if(chat_info[0].user_id == member.user_id){%>
+        <h1 class="admin"><%= member.username %></h1>
+    <% }else{ %>
+        <h1><%= member.username %></h1>
+    <% } %>
 <% }); %>
 

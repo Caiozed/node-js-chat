@@ -1,5 +1,9 @@
 <% _.each(messages, function(message){ %>
-    <h3><%= message.username%> <span class="date"><%= message.sent_date.slice(0, 19).replace('T', ' ') %></span></h3>
+    <% if(chat_info[0].user_id == message.user_id){%>
+        <h3 class="admin"><%= message.username%> <span class="date"><%= message.sent_date.slice(0, 19).replace('T', ' ') %></span></h3>
+    <% }else{ %>
+        <h3><%= message.username%> <span class="date"><%= message.sent_date.slice(0, 19).replace('T', ' ') %></span></h3>
+    <% } %>
     <p><%= message.content %></p>
 <% }); %>
 

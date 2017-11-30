@@ -11,24 +11,24 @@ define([
             "submit #login-form": "loginUser"           
         },
        
-       initialize: function(){
+        initialize: function(){
             this.render(); 
-       },
+        },
        
-       render: function(){
+        render: function(){
            this.$el.html(loginTemplate);
-       },
+        },
        
-       loginUser: function(e){
+        loginUser: function(e){
            e.preventDefault();
            var username = $("#username").val().trim();
            var password = $("#password").val().trim();
-           $.ajax({
-               url: "/new/login",
-               method: "POST",
-               dataType: "json",
-               data: {username: username, password: password},
-               success: function(response){
+           App.make_ajax_request(
+                "/new/login", 
+                "POST", 
+                "json", 
+                {username: username, password: password}, 
+                function(response){
                     console.log(response);
                     if(response.results.length == 0){
                       $("#error-handling").html("<div class='alert alert-danger'>Wrong name or password!</div>");
@@ -38,13 +38,13 @@ define([
                         sessionStorage.username = result.username;
                         App.redirect_to("#chats");
                     }
-               },
-               
-               error: function(response){
+                },
+                
+                function(response){
                    $("#error-handling").html(response);
-               }
-           });
-       }
+                }
+            );
+        }
     });
     
     return {

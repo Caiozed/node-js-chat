@@ -31,7 +31,7 @@ define([
                 "/chats", 
                 "POST", 
                 "json", 
-                {chat_id: this.id}, 
+                {},
                 function(response){
                     $.each(response, function(key, chat){
                         App.is_member(chat.id,

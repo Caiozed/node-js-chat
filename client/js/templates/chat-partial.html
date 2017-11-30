@@ -10,6 +10,6 @@
     <% } %>
     <% if(chat.user_id == sessionStorage.user_id){ %>
         <a class="text-center btn btn-warning" href="#edit/chat/<%= chat.id %>">Edit</a>
+        <a class="text-center btn btn-danger" id="delete_chat" data-chat_id="<%= chat.id %>" href="_blank">Delete</a>
     <% } %>
-    <a class="text-center btn btn-danger" id="delete_chat" data-chat_id="<%= chat.id %>" href="_blank">Delete</a>
 </div>
