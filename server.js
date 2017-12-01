@@ -19,10 +19,10 @@ if(process.env.ENVIROMENT=="Development" ){
     }); 
 }else{
     var con = mysql.createConnection({
-      host: process.env.IP,
-      user: "caiozed",
-      password: "",
-      database: "c9",
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       multipleStatements: true
     }); 
 }
