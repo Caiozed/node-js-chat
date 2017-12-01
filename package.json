@@ -10,7 +10,8 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
-    "grunt": "~1.0.1"
+    "grunt": "~1.0.1",
+    "mysql": "^2.15.0"
   },
   "devDependencies": {
     "grunt-contrib-cssmin": "^2.2.1",
