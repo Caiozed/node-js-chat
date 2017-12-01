@@ -9,13 +9,24 @@ var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
-var con = mysql.createConnection({
-  host: process.env.IP,
-  user: "caiozed",
-  password: "",
-  database: "c9",
-  multipleStatements: true
-});
+if(process.env.ENVIROMENT=="Development" ){
+   var con = mysql.createConnection({
+      host: process.env.IP,
+      user: "caiozed",
+      password: "",
+      database: "c9",
+      multipleStatements: true
+    }); 
+}else{
+    var con = mysql.createConnection({
+      host: process.env.IP,
+      user: "caiozed",
+      password: "",
+      database: "c9",
+      multipleStatements: true
+    }); 
+}
+
 
 con.connect(function(err) {
     if (err) throw err;
@@ -83,8 +94,8 @@ app.post('/new/chat', function(req, res){
     });
 });
 
-app.get('/chats', function(req, res){
-    var query = "SELECT * FROM chats";
+app.post('/chats', function(req, res){
+    var query = "SELECT * FROM chats ORDER BY name";
     con.query(query, function(err, results, fields){
         if(err){
             res.send("<div class='alert alert-danger'>Something is wrong</div>"); 
@@ -208,6 +219,19 @@ app.post('/new/message', function(req, res){
 
 app.post('/messages', function(req, res){
     var query = "SELECT * FROM messages INNER JOIN users ON messages.user_id = users.id WHERE messages.chat_id = ? ORDER BY sent_date ASC";
+    var chat_id = req.body.chat_id;
+    con.query(query, [chat_id], function(err, results, fields){
+        if(err){
+            res.json({status: 400, msg: "<div class='alert alert-danger'>You'r Already a member!</div>"});
+            res.end();
+        }else{
+            res.send(JSON.stringify(results));
+        }
+    });
+});
+
+app.post('/messages_count', function(req, res){
+    var query = "SELECT COUNT(*) AS messages FROM messages WHERE messages.chat_id = ?";
     var chat_id = req.body.chat_id;
     con.query(query, [chat_id], function(err, results, fields){
         if(err){

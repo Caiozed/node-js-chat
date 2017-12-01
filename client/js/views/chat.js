@@ -30,9 +30,13 @@ define([
         },
        
         render: function(){
+            var that = this;
             this.$el.html(this.template);
             this.getMembers();
             this.getMessages();
+            setInterval(function(){
+                that.getMessageCount();
+            }, 1000);
         },
         
        
@@ -65,7 +69,28 @@ define([
                 $("#message").text('');
                 that.getMessages(); 
             }
-            },
+        },
+            
+        getMessageCount: function(){
+            var that = this;
+            App.make_ajax_request( 
+                "/messages_count", 
+                "POST", 
+                "json", 
+                {chat_id: that.id},
+                
+                function(response){
+                    if(response[0].messages > that.message_count){
+                        that.message_count = response[0].messages;
+                        that.getMessages();
+                    }
+                }, 
+                
+                function(response){
+                    console.log(response);
+                }
+            );
+        },  
        
         getMessages: function(){
             var that = this;
