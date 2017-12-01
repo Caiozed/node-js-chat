@@ -8,9 +8,9 @@ var mysql = require('mysql');
 var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
-
-if(process.env.ENVIROMENT=="Development" ){
-   var con = mysql.createConnection({
+var con;
+if(!process.env.ENVIROMENT){
+    con = mysql.createConnection({
       host: process.env.IP,
       user: "caiozed",
       password: "",
@@ -18,7 +18,7 @@ if(process.env.ENVIROMENT=="Development" ){
       multipleStatements: true
     }); 
 }else{
-    var con = mysql.createConnection({
+    con = mysql.createConnection({
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
