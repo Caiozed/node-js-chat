@@ -8,29 +8,29 @@ var mysql = require('mysql');
 var app = express();
 var bodyParser = require('body-parser');
 var con;
-// if(!process.env.ENVIROMENT){
-//     con = mysql.createConnection({
-//       host: process.env.IP,
-//       user: "caiozed",
-//       password: "",
-//       database: "c9",
-//       multipleStatements: true
-//     }); 
-// }else{
-//     con = mysql.createConnection({
-//       host: process.env.DB_HOST,
-//       user: process.env.DB_USER,
-//       password: process.env.DB_PASSWORD,
-//       database: process.env.DB_NAME,
-//       multipleStatements: true
-//     }); 
-// }
+if(!process.env.ENVIROMENT){
+    con = mysql.createConnection({
+      host: process.env.IP,
+      user: "caiozed",
+      password: "",
+      database: "c9",
+      multipleStatements: true
+    }); 
+}else{
+    con = mysql.createConnection({
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      multipleStatements: true
+    }); 
+}
 
 
-// con.connect(function(err) {
-//     if (err) throw err;
-//     console.log("Connected!");
-// });
+con.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+});
 
 //
 // ## SimpleServer `SimpleServer(obj)`
