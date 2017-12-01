@@ -7,31 +7,30 @@ var express = require('express');
 var mysql = require('mysql');
 var app = express();
 var bodyParser = require('body-parser');
-var session = require('express-session');
 var con;
-if(!process.env.ENVIROMENT){
-    con = mysql.createConnection({
-      host: process.env.IP,
-      user: "caiozed",
-      password: "",
-      database: "c9",
-      multipleStatements: true
-    }); 
-}else{
-    con = mysql.createConnection({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-      multipleStatements: true
-    }); 
-}
+// if(!process.env.ENVIROMENT){
+//     con = mysql.createConnection({
+//       host: process.env.IP,
+//       user: "caiozed",
+//       password: "",
+//       database: "c9",
+//       multipleStatements: true
+//     }); 
+// }else{
+//     con = mysql.createConnection({
+//       host: process.env.DB_HOST,
+//       user: process.env.DB_USER,
+//       password: process.env.DB_PASSWORD,
+//       database: process.env.DB_NAME,
+//       multipleStatements: true
+//     }); 
+// }
 
 
-con.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-});
+// con.connect(function(err) {
+//     if (err) throw err;
+//     console.log("Connected!");
+// });
 
 //
 // ## SimpleServer `SimpleServer(obj)`
@@ -43,16 +42,9 @@ con.connect(function(err) {
 
 app.use(express.static('client'));
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(session({
-    secret: "shhh", 
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true}
-}));
 
 app.use(bodyParser.json());
 
-var sess;
 app.post('/new/user', function(req, res){
     var query = "INSERT INTO users(username, password) VALUES (?, ?)";
     var username = req.body.username;
